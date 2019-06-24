@@ -49,3 +49,15 @@ git log
 git log --pretty=oneline
 //要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
 git reflog
+
+/*
+ *2.2工作区和暂存区
+ */
+ /*
+ 工作区（Working Directory）就是你在电脑里能看到的目录。
+ 版本库（Repository）工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+ Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，
+ 还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+ git add 命令将需要提交的文件修改通通放到暂存区，git commit命令一次性提交暂存区的所有修改至当前分支。
+*/
+git status //查看当前状态（查看有哪些文件被修改）。
