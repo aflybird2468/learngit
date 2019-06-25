@@ -22,7 +22,7 @@ git add readme.txt
 git commit -m "commit message"
 /*
 注意：
-1.如果提交时与之前版本没有任何不同，则不会提交并提醒 
+1.如果提交时与之前版本没有任何不同（没有对工作区做任何修改），则不会提交并提醒 
 On branch master
 nothing to commit, working tree clean
 
@@ -61,3 +61,7 @@ git reflog
  git add 命令将需要提交的文件修改通通放到暂存区，git commit命令一次性提交暂存区的所有修改至当前分支。
 */
 git status //查看当前状态（查看有哪些文件被修改）。
+/*
+ *2.3管理修改
+ */
+每次修改，如果不用git add到暂存区，那就不会加入到commit中。
