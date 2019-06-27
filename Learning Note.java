@@ -34,6 +34,8 @@ Changes not staged for commit:
 
 /*
  *2.时光穿梭机
+ 要随时掌握工作区的状态，使用git status命令。
+ 如果git status告诉你有文件被修改过，用git diff可以查看修改内容。
  *2.1 版本回退
  */
 //Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
@@ -71,13 +73,16 @@ git status //查看当前状态（查看有哪些文件被修改）。
  *2.4撤销修改
  */
 /*
-场景1（撤销工作区的修改）：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，
+场景1（撤销工作区的修改）：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时
+（此时只是相对于上次commit又修改了某个文件，没有执行git add和git commit命令），
 用命令git checkout -- file。
+执行后回到上次git commit状态。
 */
 git checkout -- file
 /*
-场景2（撤销暂存区的修改）：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，
-分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作。
+场景2（撤销暂存区的修改）：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时
+（此时相对于上次commit，不仅修改了某个文件，
+，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作。
 */
 git reset HEAD <file>
 /*
@@ -105,6 +110,41 @@ git reset HEAD <file>
  
 /*
  *3.远程仓库
+ */
+//注册GitHub账号，创建SSH Key:
+ssh-keygen -t rsa -C "youremail@example.com"
+//生成后在用户主目录里可以找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件
+//然后在GitHub上添加公钥id_rsa.pub
+
+/*
  *3.1 添加远程库
  */
+//要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+git remote add origin git@github.com:aflybird2468/learngit.git
+//关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+git push -u origin master
+//此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
 
+/*
+ *3.2 从远程库克隆
+ */
+ //从GitHub克隆一个远程库到本地,eg:
+ git clone git@github.com:aflybird2468/gitskills.git
+ /*
+ GitHub给出的地址不止一个，还可以用
+ https://github.com/aflybird2468/gitskills.git或https://github.com/aflybird2468/gitskills这样的地址。
+ 要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+ Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
+ */
+ 
+ /*
+ *4.分支管理
+ *4.1创建与合并分支
+ */
+git branch //查看分支：
+git branch <name> //创建分支
+git checkout <name> //切换分支
+git checkout -b <name> //创建+切换分支
+git merge <name> //合并某分支到当前分支
+git branch -d <name> //删除分支
+ 
