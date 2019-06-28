@@ -134,3 +134,8 @@ git log --graph --pretty=oneline --abbrev-commit    # 合并后，用git log 查
 # 再把dev分支合并到master上，在master分支发布1.0版本；
 # 你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
 
+<<<<<<< Updated upstream
+E的的 
+=======
+####    4.4Bug分支	#### 
+>>>>>>> Stashed changes
