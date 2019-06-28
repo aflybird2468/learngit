@@ -146,3 +146,8 @@ git stash list    # 查看储藏的工作现场
 git stash apply   # 1.恢复后，stash储藏的内容并不删除，你需要用git stash drop来删除；
 git stash drop    # 可以加名字也可以不加，与git stash apply相似
 git stash pop    # 2.恢复的同时把stash储藏的内容也删了
+
+####    4.5Feature分支	#### 
+# 开发一个新feature，最好新建一个分支；
+# 如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+git branch -D <name>
