@@ -134,8 +134,15 @@ git log --graph --pretty=oneline --abbrev-commit    # 合并后，用git log 查
 # 再把dev分支合并到master上，在master分支发布1.0版本；
 # 你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
 
-<<<<<<< Updated upstream
-E的的 
-=======
+
 ####    4.4Bug分支	#### 
->>>>>>> Stashed changes
+#　修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
+#　当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场。
+git stash    # stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+git stash list    # 查看储藏的工作现场
+# 恢复工作现场的方式
+# 如果你想应用更早的储藏，你可以通过名字指定它，像这样：git stash apply stash@{2}。
+# 如果你不指明，Git 默认使用最近的储藏并尝试应用它
+git stash apply   # 1.恢复后，stash储藏的内容并不删除，你需要用git stash drop来删除；
+git stash drop    # 可以加名字也可以不加，与git stash apply相似
+git stash pop    # 2.恢复的同时把stash储藏的内容也删了
