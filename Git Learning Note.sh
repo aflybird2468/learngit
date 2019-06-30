@@ -91,6 +91,14 @@ ssh-keygen -t rsa -C "youremail@example.com"
 ####    3.1 添加远程库  ####
 # 要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
 git remote add origin git@github.com:aflybird2468/learngit.git
+# 如果在使用命令git remote add时本地库已经关联了一个远程库
+# 可以先用git remote -v查看远程库信息（远程库 <name> ）
+git remote -v
+# 可以删除已有的GitHub远程库
+git remote rm <name>
+# 添加多个远程库
+git remote add github git@github.com:michaelliao/learngit.git    # 关联GitHub的远程库，远程库的名称叫github
+git remote add gitee git@gitee.com:liaoxuefeng/learngit.git    # 关联码云的远程库，远程库的名称叫gitee
 # 关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
 git push -u origin master
 # 此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
@@ -151,3 +159,95 @@ git stash pop    # 2.恢复的同时把stash储藏的内容也删了
 # 开发一个新feature，最好新建一个分支；
 # 如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
 git branch -D <name>
+
+####    4.6多人协作	#### 
+# 要查看远程库的信息，用git remote
+git remote
+# 或者，用git remote -v显示更详细的信息
+git remote -v
+####    4.6.1推送分支	####
+# 推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上
+git push origin master
+# 如果要推送其他分支，比如dev，就改成
+git push origin dev
+# 通常，master、dev等要时刻与远程同步；bug、feature不一定要与远程同步
+####    4.6.2抓取分支	####
+# 多人协作时，当你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法很简单，Git已经提示我们，
+# 先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送
+git pull
+ # There is no tracking information for the current branch.
+ # Please specify which branch you want to merge with.
+ # See git-pull(1) for details.
+ # 
+ #     git pull <remote> <branch>
+ # 
+ # If you wish to set tracking information for this branch you can do so with:
+ # 
+ #     git branch --set-upstream-to=origin/<branch> dev
+# git pull也失败了，原因是没有指定本地dev分支与远程origin/dev分支的链接，根据提示，设置dev和origin/dev的链接：
+git branch --set-upstream-to=origin/dev dev
+#再pull：
+git pull
+# git pull成功，但是合并可能有冲突，需要手动解决，解决的方法和分支管理中的解决冲突完全一样。解决后，提交，再push
+
+# 因此，多人协作的工作模式通常是这样：
+# 首先，可以试图用git push origin <branch-name>推送自己的修改；
+# 如果推送失败，则因为远程分支比你的本地更新，需要先用git pull抓取远程的最新提交，并试图合并；
+# 如果合并有冲突，则解决冲突，并在本地提交；
+# 没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+# 如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+# 这就是多人协作的工作模式，一旦熟悉了，就非常简单。
+
+####    小结	####
+# 查看远程库信息，使用git remote -v；
+# 本地新建的分支如果不推送到远程，对其他人就是不可见的；
+# 从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+# 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+# 建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+# 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+####    4.7ReBase	####
+# 暂时不写
+
+####    5.标签管理	####
+# Git的标签就是指向某个commit的指针（跟分支很像对不对？但是分支可以移动，标签不能移动）。
+# 通俗来说，tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。
+
+####    5.1创建标签	####
+# 创建的标签都只存储在本地，不会自动推送到远程。
+# 1.命令git tag <tagname>用于新建一个标签，默认为HEAD（默认标签是打在最新提交的commit上）；
+git tag v0.1
+# 2.也可以指定一个commit id，通过git log --pretty=oneline --abbrev-commit命令查找历史提交的commit id，敲入命令：
+git tag v0.9 commit_id
+# 3.创建带有说明的标签，用-a指定标签名，-m指定说明文字
+git tag -a 1.0 -m "statement"
+# 命令git tag可以查看所有标签。注意，标签不是按时间顺序列出，而是按字母排序的。
+git tag
+#　查看某个标签的标签信息
+git show v1.0
+
+#注意：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。
+
+####    5.2操作标签	####
+# 命令git push origin <tagname>可以推送一个本地标签；
+git push origin v1.0
+# 命令git push origin --tags可以推送全部未推送过的本地标签；
+git push origin --tags
+# 命令git tag -d <tagname>可以删除一个本地标签；
+# 因为创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
+# 如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除，然后，从远程删除。删除命令也是push。
+git tag -d v0.1
+# 命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
+git push origin :refs/tags/v0.1
+
+####    使用GitHub	####
+# 1.在GitHub上，可以任意Fork开源仓库；
+# 在某个项目主页点“Fork”，就会在自己账号下克隆出该项目。
+# eg: 在Bootstrap项目主页https://github.com/twbs/bootstrap点“Fork”，从自己账号下clone。
+git clone git@github.com:aflybird2468/bootstrap.git
+# 2。自己拥有Fork后的仓库（自己账号下）的读写权限；
+# 一定要从自己的账号下clone仓库，这样你才能推送修改。
+# 如果你想修复bootstrap的一个bug，或者新增一个功能，立刻就可以开始干活，干完后，往自己的仓库推送。
+# 如果从bootstrap的作者的仓库地址git@github.com:twbs/bootstrap.git克隆，因为没有权限，你将不能推送修改。
+# 3.可以推送pull request给官方仓库来贡献代码。
+# 如果你希望bootstrap的官方库能接受你的修改，你就可以在GitHub上发起一个pull request。当然，对方是否接受你的pull request就不一定了。
