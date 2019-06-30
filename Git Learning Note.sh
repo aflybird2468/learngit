@@ -89,12 +89,12 @@ ssh-keygen -t rsa -C "youremail@example.com"
 # 然后在GitHub上添加公钥id_rsa.pub
 
 ####    3.1 添加远程库  ####
-# 要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+# 要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；，origin为远程库名字
 git remote add origin git@github.com:aflybird2468/learngit.git
 # 如果在使用命令git remote add时本地库已经关联了一个远程库
-# 可以先用git remote -v查看远程库信息（远程库 <name> ）
+# 可以先用git remote -v查看远程库信息（远程库名称 <name> ）
 git remote -v
-# 可以删除已有的GitHub远程库
+# 可以删除已有的GitHub远程库，name为远程库名称
 git remote rm <name>
 # 添加多个远程库
 git remote add github git@github.com:michaelliao/learngit.git    # 关联GitHub的远程库，远程库的名称叫github
@@ -240,7 +240,7 @@ git tag -d v0.1
 # 命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
 git push origin :refs/tags/v0.1
 
-####    使用GitHub	####
+####    6.使用GitHub	####
 # 1.在GitHub上，可以任意Fork开源仓库；
 # 在某个项目主页点“Fork”，就会在自己账号下克隆出该项目。
 # eg: 在Bootstrap项目主页https://github.com/twbs/bootstrap点“Fork”，从自己账号下clone。
@@ -251,3 +251,47 @@ git clone git@github.com:aflybird2468/bootstrap.git
 # 如果从bootstrap的作者的仓库地址git@github.com:twbs/bootstrap.git克隆，因为没有权限，你将不能推送修改。
 # 3.可以推送pull request给官方仓库来贡献代码。
 # 如果你希望bootstrap的官方库能接受你的修改，你就可以在GitHub上发起一个pull request。当然，对方是否接受你的pull request就不一定了。
+
+####    7.使用码云	####
+# 暂时不写
+
+####    8.自定义Git	####
+####    8.1忽略特殊文件	####
+# 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
+# GitHub提供的各种配置文件：https://github.com/github/gitignore
+# git add一个被.gitignore忽略了的文件到Git，会发现添加不了，如果确实想添加该文件，可以用-f强制添加到Git：
+git add -f <file>
+# 若发现可能是.gitignore写得有问题，需要找出来到底哪个规则写错了，可以用git check-ignore命令检查
+git check-ignore -v <file>
+####    小结	####
+# 忽略某些文件时，需要编写.gitignore；
+# .gitignore文件本身要放到远程版本库里，并且可以对.gitignore做版本管理！
+
+####    8.2配置别名	####
+# 告诉Git：以后st就表示status
+git config --global alias.st status
+# 用co表示checkout，ci表示commit，br表示branch
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+# 在2.4撤销修改一节中，我们知道，命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区。既然是一个unstage操作，就可以配置一个unstage别名：
+git config --global alias.unstage 'reset HEAD'
+# 此时，git unstage test.py 命令相当于 git reset HEAD test.py
+# 配置一个git last，让其显示最后一次提交信息：
+git config --global alias.last 'log -1'
+# 此时，git last 命令相当于 git log -l
+# 实用，配置一个 git lg，让其图形化显示log，显示效果极佳。
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+####    配置文件	####
+# 配置Git的时候，加上--global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。
+# 配置文件放哪了？每个仓库的Git配置文件都放在.git/config文件中，不加--global就是修改的该文件。
+# 别名就在[alias]后面，要删除别名，直接把对应的行删掉即可。
+# 当前用户的Git配置文件放在该用户主目录下的一个隐藏文件.gitconfig；加上--global后就是修改的该文件。
+# 配置别名也可以直接修改这个文件，如果改错了，也可以删掉文件重新通过命令配置。
+
+####    8.3搭建Git服务器	####
+# 暂时不写
+
+####    期末总结	####
+# 国外网友制作的Git Cheat Sheet，建议打印出来备用：https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
+# Git的官方网站：http://git-scm.com
